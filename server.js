@@ -4,11 +4,58 @@ const bodyParser = require('body-parser');
 const server = express();
 const PORT = 3030;
 
-const user = [
-"Daniel",
-"Steven",
-"Leon"
-];
+let idCounter = 3;
+const users = {
+1: "Daniel",
+2: "Steven",
+3: "Leon",
+};
+
+server.use((req, res, next) => {
+    console.log("Got a request");
+    next();
+  });
+  
+  server.use(bodyParser.json());
+
+
+server.get("/users", (req, res) => {
+    if (req.query.user) {
+      let user = null;
+      Object.keys(user).forEach((id => {
+        if (user[id] === req.query.user) {
+          user = id;
+        };
+      }));
+      res.status(200);
+      res.send(user);
+    } else {
+      res.status(200);
+      res.send(users);
+    }
+  });
+
+  server.get("/users/:id/", (req, res) => {
+    const {
+      id
+    } = req.params;
+    res.status(200);
+    res.send(users[id])
+  });
+
+  server.post("/users", (req, res) => {
+      const {
+          user
+      } = req.body;
+
+
+  idCounter++;
+  users[idCounter] = user;
+  res.status(200);
+  res.send({ id: idCounter});
+});
+
+server.delete[3]
 
 server.listen(3030, (err) => {
     if (err) {
