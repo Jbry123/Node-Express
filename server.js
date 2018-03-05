@@ -4,11 +4,27 @@ const bodyParser = require('body-parser');
 const server = express();
 const PORT = 3030;
 
-const user = [
+const users = [
 "Daniel",
 "Steven",
-"Leon"
+"Leon",
 ];
+
+server.get("/", (req, res) => {
+    if (req.query.user) {
+      let user = null;
+      Object.keys(user).forEach((id => {
+        if (user[id] === req.query.user) {
+          user = id;
+        };
+      }));
+      res.status(200);
+      res.send(user);
+    } else {
+      res.status(200);
+      res.send(users);
+    }
+  });
 
 server.listen(3030, (err) => {
     if (err) {
